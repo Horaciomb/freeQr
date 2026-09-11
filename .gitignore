@@ -14,3 +14,21 @@ salida/
 .vscode/
 .idea/
 Thumbs.db
+
+# Node / app web
+node_modules/
+dist/
+.vite/
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Vercel
+.vercel
+
+# Entorno
+.env
+.env.local
+.env.*.local

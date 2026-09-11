@@ -1,0 +1,355 @@
+:root {
+  --fondo: #f6f7f9;
+  --superficie: #ffffff;
+  --texto: #1a1d23;
+  --texto-suave: #5c6370;
+  --borde: #d9dde3;
+  --acento: #2563eb;
+  --acento-texto: #ffffff;
+  --aviso: #8a5a00;
+  --aviso-fondo: #fff6e0;
+  --error: #b42318;
+  --ok: #15803d;
+  --radio: 10px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fondo: #14161a;
+    --superficie: #1d2026;
+    --texto: #e8eaed;
+    --texto-suave: #9aa1ad;
+    --borde: #343a44;
+    --acento: #5b8cff;
+    --acento-texto: #0d1117;
+    --aviso: #ffcf70;
+    --aviso-fondo: #3a2f12;
+    --error: #ff8b80;
+    --ok: #6ee7a0;
+    color-scheme: dark;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+.pagina {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+.cabecera h1 {
+  margin: 0;
+  font-size: 1.9rem;
+  letter-spacing: -0.02em;
+}
+
+.cabecera p {
+  margin: 0.25rem 0 0;
+  color: var(--texto-suave);
+}
+
+.contenido {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 768px) {
+  .contenido {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+  .columna--preview {
+    position: sticky;
+    top: 2rem;
+  }
+}
+
+/* En mobile el preview va primero: se quiere ver el resultado sin scrollear.
+   Se hace con order para no alterar el orden del DOM ni la secuencia de foco. */
+@media (max-width: 767px) {
+  .columna--preview {
+    order: -1;
+  }
+}
+
+/* ---------- Formulario ---------- */
+
+.formulario {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.campo {
+  display: grid;
+  gap: 0.4rem;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.campo > label,
+.campo > legend {
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0;
+}
+
+input[type='url'],
+input[type='text'],
+select {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  font: inherit;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+}
+
+.ayuda {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--texto-suave);
+  overflow-wrap: anywhere;
+  min-height: 1.25rem;
+}
+
+.aviso {
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  font-size: 0.85rem;
+  color: var(--aviso);
+  background: var(--aviso-fondo);
+  border-radius: var(--radio);
+}
+
+.niveles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: 0.5rem;
+}
+
+.nivel {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    'radio letra'
+    'radio detalle';
+  gap: 0 0.5rem;
+  align-items: center;
+  padding: 0.5rem 0.6rem;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  cursor: pointer;
+}
+
+.nivel:has(input:checked) {
+  border-color: var(--acento);
+  box-shadow: inset 0 0 0 1px var(--acento);
+}
+
+.nivel input {
+  grid-area: radio;
+  margin: 0;
+}
+
+.nivel__letra {
+  grid-area: letra;
+  font-weight: 600;
+}
+
+.nivel__detalle {
+  grid-area: detalle;
+  font-size: 0.75rem;
+  color: var(--texto-suave);
+}
+
+.campo--colores {
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.campo-color {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.campo-color label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.campo-color__controles {
+  display: grid;
+  grid-template-columns: 2.75rem 1fr;
+  gap: 0.5rem;
+}
+
+input[type='color'] {
+  width: 100%;
+  height: 2.5rem;
+  padding: 2px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  cursor: pointer;
+}
+
+.campo-color__hex {
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-size: 0.85rem;
+  min-width: 0;
+}
+
+/* ---------- Preview ---------- */
+
+.preview {
+  /* Fondo claro fijo, no var(--superficie): en modo oscuro un QR negro sobre
+     blanco no debe quedar flotando sin su zona de silencio. */
+  background: #ffffff;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 1rem;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+.preview svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 22rem;
+}
+
+.preview--vacio {
+  border-style: dashed;
+  background: transparent;
+  color: var(--texto-suave);
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.preview--vacio p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.preview__fuente-oculta {
+  display: none;
+}
+
+/* ---------- Acciones ---------- */
+
+.acciones {
+  margin-top: 1rem;
+}
+
+.acciones__botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.boton {
+  flex: 1 1 9rem;
+  min-height: 44px; /* target tactil */
+  padding: 0.6rem 1rem;
+  font: inherit;
+  font-weight: 500;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  cursor: pointer;
+}
+
+.boton:hover:not(:disabled) {
+  border-color: var(--acento);
+}
+
+.boton--principal {
+  color: var(--acento-texto);
+  background: var(--acento);
+  border-color: var(--acento);
+}
+
+.boton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.estado {
+  margin: 0.6rem 0 0;
+  font-size: 0.85rem;
+  min-height: 1.25rem;
+  color: var(--texto-suave);
+}
+
+.estado--ok {
+  color: var(--ok);
+}
+
+.estado--aviso {
+  color: var(--aviso);
+}
+
+.estado--error {
+  color: var(--error);
+}
+
+/* ---------- Pie ---------- */
+
+.pie {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--borde);
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+.pie p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.pie code {
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-size: 0.85em;
+  padding: 0.15rem 0.35rem;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
